@@ -66,3 +66,56 @@ kubectl get pods
 kubectl describe pod $PODNAME
 
 ```
+
+# RepicaSets and Replication Controller  
+- replication controller: run multiple instances of a pod, allowing us to achieve high availability
+    - can be used with a single pod, replication controller will bring up a new pod if your existing pod failed
+    - ensures that specified number of pods is running at all times 
+
+  - load balancing and scaling: replication controller will span multiple nodes in a cluster, helps to scale the application when demand increases
+
+Replication Controller vs Replica Set
+- Replication controller is the legacy method for setting up replicas, all replicas should be created with the replica set
+
+## creating replicationControllers
+How do you create a replication controller?
+- create a new definiton file
+    - the definition file will look as following 
+    ``` 
+    apiVersion: v1 //replicationControllers use the v1 api version
+    kind: ReplicationController
+    metadata: 
+      name:
+      labels:
+        test: test
+    
+    spec: // this is where it gets different, we add a "template" for what container the controller needs to use 
+      template: //we need to move EVERYTHING from the pod definition file we created besides the apiVersion and kind
+        metadata:
+          name: nginx
+          type: front-end
+        spec:
+          containers:
+            - name: nginx
+              image: nginx
+      replicas: 3 //this is a child of spec, so template and replicas needs to be on the same line
+    ```
+
+    - commands for interacting with the replication controller 
+    ```
+    //deploy
+    kubectl apply -f rc-definition.yml 
+
+    //get replication controllers 
+    kubectl get replicationControllers
+
+    //delete replication controllers
+    kubectl delete replicationControllers $controllerName
+
+    ```
+
+    ## Creating ReplicaSets
+
+    
+
+
