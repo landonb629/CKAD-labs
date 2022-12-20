@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: configmaps
+  labels:
+    tier: test
+
+spec:
+  containers:
+    - name: configmaps
+      image: ubuntu
+      command: ["tail", "-f", ">", "/dev/null"]
+      envFrom:
+        - configMapRef:
+            name: app-config

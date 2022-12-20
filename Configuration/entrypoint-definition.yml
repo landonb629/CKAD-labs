@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: echo-ubuntu
+  labels:
+    app: test
+
+spec:
+  containers:
+    - name: echo-ubuntu
+      image: ubuntu
+      command: ["echo"]
+      args: ["test"]

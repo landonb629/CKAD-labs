@@ -115,7 +115,86 @@ How do you create a replication controller?
     ```
 
     ## Creating ReplicaSets
+    -  replicaSets bring in labels and selectors.
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    tier: frontend
 
-    
+spec:
+  replicas: 4
+  selectors:
+    matchLabels:
+      tier: frontend
+  template:
+    spec:
+      metadata: 
+        name: frontend
+        labels:
+          tier: frontend
+      containers:
+        - name: nginx
+          image: nginx 
+```
+
+## Deployments
+Deployments are a kubernetes object that comes higher than the replica sets or replication controllers. a deployment will automatically create a replica set
+
+You can create a deployment using a definition file. 
+```
+apiVersion: apps/v1
+kind: deployment
+metadata:
+  name:
+  labels:
+
+spec: 
 
 
+```
+- a deployment will create a new replica set, as well as pods. to see all the resources created, we need to run 
+
+```
+kubectl get all
+```
+
+- Rolling updates: updating each instance one by one, only taking on container offline at a time 
+
+
+## Namespaces
+- the default namespace is created and used at first when kubernetes is first setup
+- namespaces are a way to run logically separate k8's containers in different environments on the same cluster
+- each namespace will have its own policies and resource limits 
+
+How to reference a container that is in another cluster
+```
+db-service.dev.svc.cluster.local
+#this is how you would access something in the dev cluster
+```
+- cluster.local is the default domain name of the k8s cluster
+
+How to create a pod in a non default namespace?
+```
+kubectl apply -f deployment.yml --namespace=dev
+```
+- you can also add the namespace to the pod definition file under metadata
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+  namespace: dev
+```
+
+How do you create a new namespace? 
+- use a namespace definition file 
+- running the k8s command for it 
+```
+kubectl create namespace dev
+```
+
+How do you limit the resources that a namespace can use?
+- creating a resource quota
