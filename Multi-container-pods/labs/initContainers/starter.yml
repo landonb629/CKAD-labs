@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: initlab
+  labels:
+    app: dummy
+    containers: multi
+
+spec:
+  containers:
+    - name: ubuntucontainer
+      image: ubuntu
+      command: ["tail", "-f", ">", "dev/null"]
+  

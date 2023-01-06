@@ -1,0 +1,2 @@
+- create a label on your non control plane node in minikube with a key of color and a value of red 
+- create a deployment, make sure that all these pods can only be placed on the node with a label of color=red

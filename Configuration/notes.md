@@ -304,7 +304,7 @@ Now:
 - create service account = does not automatically create a secret or a token 
 - you now need to run ```kubectl create token $sa```
 
-Creating a secret object for a service account that is non expiring 
+Creating a secret object for a service account that is non expiring (This is the old way)
 
 ```
 apiVersion: v1
@@ -316,3 +316,139 @@ metadata:
     kubernetes.io/service-account.name: dashboard-sa
 ```
 
+
+# Tolerations and Taints 
+- used to control what pods can be scheduled on what nodes 
+- does not tell a pod to go to a particular node, just tells the node to allow only the pods with certain tolerations 
+- setting up a taint will not ensure that a pod with matching toleration will be scheduled on that node. that is a differrent concept called nodeAffinity
+- taints come in the form of key/value pairs ```key1=value1```
+
+Taints: allow a specific node to repel a pod from being placed on it 
+  example: we have a three node cluster, and we have a memory intensive application called app1. We have a node called node1 in the cluster that has more memory. so, we place a taint on that node that will only allow pods from app1 to be placed on it
+
+  Taint Effect: what happens to the pods if they do not tolerate the taint.
+    Three effects: 
+      - NoSchedule: Pods will not be scheduled on the node
+      - PreferNoSchedule: try to avoid placing the pod on the node
+      - NoExecute: new pods will not be scheduled, existing pods will be evicted (killed) if they don't tolerate the taint
+
+  How to add a taint to a k8s cluster node:
+    Scenario: 3 node cluster: node1, node2, and node3
+  ```kubectl taint nodes node1 tier=app:NoSchedule```
+  What does this mean? do not schedule a pod on this node unless it has a toleration for tier=app
+
+
+Tolerations: these are what we apply to the pod itself. Tolerations will allow the scheduler to match with a taint.
+  example: we have a node that has a taint of blue, and we have 3 pods, only one pod has a toleration for blue, so that is the only pod that can tolerate the taint on that node, it can be scheduled there
+
+Commands:
+```kubectl taint``
+
+How to create a toleration:
+  Scenario: new pod being created is part of the app tier, we need it to be scheduled on the node that has a taint for the app tier 
+
+  we just ran the follow command 
+  ```kubectl taint nodes node1 tier=app:NoSchedule```
+
+  ```
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: tolerant-pod
+    labels:
+      tier: app
+  
+  spec:
+    containers: 
+      - name: tolerant-pod
+        image: app-image:latest
+
+    tolerations:
+      - key: "tier"
+        operator: "Equal"
+        value: "app"
+        effect: "NoSchedule"
+  ```
+
+
+# Node Selectors and Node Affinity
+- simple and easiest method for assigning pods to a specific node 
+- we can use labels like "size: Large" 
+
+But how does k8s know what node to put that on?
+- we must add labels to our k8s nodes before we use nodeSelectors
+
+How do we label nodes?
+``` kubectl label nodes node1 size=Large```
+
+What are the limitations with nodeSelectors?
+- you cannot do anything with advanced expressions
+for example: 
+- if we wanted to place a pod on any node that is NOT small
+- we want to place a pod on a node with labels for STAGE or DEV 
+
+```
+spec:
+  containers:
+
+  nodeSelector:
+    size: Large 
+```
+
+
+## Node Affinity 
+- ensure pods are hosted on particular nodes, just like Node Selectors but, you cannot use advanced expressions like OR and NOT 
+
+How to use advanced expressions?
+- this is where the operator comes into play, the value can be "In", "NotIn", "Exists"
+in this example, the pod will be placed on a node that has a label of size that equals Large or Medium
+```
+operator: In
+values: 
+  - Large 
+  - Medium
+```
+in this example, the pod will be placed on a node that has a label of size and any node that doesn't equal small 
+```
+operator: NotIn
+values:
+  - Small
+```
+
+in this example, the pod will be placed on any node that the label "size" is set
+```
+- key: size
+  operator: Exists
+```
+
+```
+spec:
+  containers:
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: size
+                operator: In
+                values:
+                  - Large
+                  - Medium
+```
+
+What if there are no matches for your affinity?
+- This is where the node affinity type comes into effect
+Node affinity type is that long value right after the nodeAffinity attribute 
+There are two types of node affinity: 
+  - requiredDuringSchedulingIgnoredDuringExecution: scheduler cannot schedule the pod unless the rule is met. use this when placement of the pod is crucial
+  - preferredDuringSchedulingIgnoredDuringExecution: scheduler tries to find a node that meets the rule, if a match is not available, still schedules the pod 
+
+
+  what does this mean?
+    - there are two states in the lifecycle of a pod 
+      - duringScheduling: pod doesnt exist, is created for the first time
+      - duringExecution: state where the pod is running, and a change is made to the environment that impacts affinity, such as a label being changed on a node
+          - currently, changes after the pod has been scheduled will be ignored but that is to be changed in the future
+
+  

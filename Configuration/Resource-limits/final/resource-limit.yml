@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resourcelimitubuntu
+
+spec: 
+  containers:
+    - name: resourcelimitubuntu
+      image: ubuntu
+      command: ["tail", "-f", "<", "/dev/null"]
+      resources:
+        limits:
+          memory: 50Mi
+          cpu: 500m
+      

@@ -1,0 +1,10 @@
+apiVersion: 
+kind:  
+metadata:
+  name: resourceLimitUbuntu
+
+spec: 
+  containers:
+    - name: 
+      image: 
+      
