@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod 
+metadata: 
+  name: index-app
+  labels:
+    app: frontend
+
+spec:
+  containers:
+    - name: index-app
+      image: nginx

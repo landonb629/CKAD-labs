@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: backend-rs
+  labels: 
+    tier: database
+    env: dev
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: database 
+  template:
+    metadata:
+      name: backend-containers
+      labels:
+        tier: database
+        env: dev 
+    spec:
+      containers:
+        - name: backend
+          image: nginx #not a backend image, just a demo
