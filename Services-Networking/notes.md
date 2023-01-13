@@ -59,3 +59,316 @@ spec: # configure the service itself
 
 what happens when pods are distributed across multiple nodes?
 - creating a service will span across all the nodes in the cluster
+
+
+## clusterIP
+
+in a tiered application architecture, we would have a frontend, backend, and potentially a layer like redis
+
+we may have a service for each the frontend, backend, and caching layer, but how would we connect all this together? 
+    - the pods IP addresses are dynamic so they would not be able to communicate with each other reliably by IP
+
+a service can help up group together pods and provide a single interface for pods to access this service: ClusterIP version 
+
+how to create a definition file for this?
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+
+spec:
+  type: ClusterIP # default type 
+  ports:
+    - targetPort: 80 # port where the backend is exposed
+      port: 80 # where the service is exposed
+  selector: # this is how we are linking our pods to our service
+    app: myapp
+    type: backend
+```
+
+
+## Network Policies 
+- object in kubernetes that specifies how a pod is allowed to communicate with various network entities 
+    - by default, when you allow inbound traffic, the return traffic is allowed also, you do not need to create an egress rule for that 
+
+solutions that support network policies:
+- kube router
+- calico 
+- Romana
+- weave-net
+
+
+first lets talk about all the network connections (north to south || ingress to egress ) required for a 3 tiered application
+
+web
+- ingress: 80
+- egress 5000
+
+api 
+- ingress 5000
+- egress 3306
+
+database
+- ingress 3306
+- egress 5000
+
+
+Network Security
+- we have different nodes with pods running on each of them
+
+k8s is configured by default with an all allow rule that allows traffic from any pod other pod or services within the cluster
+
+example of when you would implement a network policy
+- you have allowed communication to flow between all three tiers of a deployment but your security team says that you need to block traffic from the web server to the database server
+- this is when you would implement a network policy
+
+
+How to link network policies to pods?
+- labels and selectors 
+
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress 
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: api-pod 
+    ports:
+    - protocol: TCP
+      port: 3306
+
+```
+
+## Developing Network Policies 
+
+the different pieces of a network policy 
+- policyTypes: tell the direction of traffic that the policy applies to 
+    options:
+      - ingress
+      - egress 
+- ingress: if the policyType is ingress, this field will specify the configuration of the ingress rule 
+    - has a subfield of from:
+        options:
+          - podSelector
+          - namespaceSelector
+          - ipBlock 
+- ports: tells what ports to allow through the network policy
+    options:
+     - 
+Architecture:
+    - web tier pods
+    - api tier pods
+    - db tier pods 
+
+goal: DB pod can only allow traffic form the API pods 
+    1st step: deny all traffic to the DB pod 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+  namespace: prod # this is in the prod namespace
+spec:
+  podSelector:
+    matchLabels:
+      role: db 
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: api-pod 
+      namespaceSelector: # this allows ingress traffic from the staging api-pod 
+        matchLabels:
+          name: staging 
+    ports:
+    - protocol: TCP
+      port: 3306
+```
+
+### What if you have multiple api-pods running in different namespaces
+- add the namespaceSelector field 
+
+```
+ingress:
+- from:
+  - podSelector:
+      name: api-pod 
+    namespaceSelector:
+      matchLabels:
+        name: staging 
+  ports:
+  - protocol: TCP
+    port: 3306
+```
+
+ ### What if you need to allow traffic that is not in the k8s cluster?
+- add the ipBlock field 
+
+```
+ingress:
+- from:
+  - podSelector:
+      name: api-pod 
+    namespaceSelector:
+      matchLabels:
+        name: staging 
+  ports:
+  - protocol: TCP
+    port: 3306
+  
+  - ipBlock:
+      cidr: 192.168.5.10
+```
+
+
+### How traffic rules are processed?
+- the different traffic rules can be looked at with AND / OR logic. lets look at some scenarios 
+
+rule processing:
+- pod has label of api 
+AND 
+- pod is namespace staging
+```
+- from:
+  - podSelector:
+      name: api
+    namespaceSelector:
+      matchLabels:
+        name: staging 
+```
+
+rule processing:
+- pod has label of api 
+OR 
+- pod is in staging namespace
+
+```
+- from:
+  - podSelector:
+      name: api
+  - namespaceSelector:
+      matchLabels:
+        name: staging 
+```
+
+rule processing:
+- pod has label api 
+AND 
+- pod is in staging namespace
+
+OR 
+- ip addr is from 10.10.0.0/24
+```
+- from:
+  - podSelector:
+      name: api
+    namespaceSelector:
+      matchLabels:
+        name: staging 
+  - ipBlock:
+      cidr: 10.10.0.0/24
+```
+
+
+### Egress rules 
+what if we want to allow the db agent on the pod to reach out to the backup server?
+- we can add an egress block under ingress
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+  namespace: prod # this is in the prod namespace
+spec:
+  podSelector:
+    matchLabels:
+      role: db 
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: api-pod 
+      namespaceSelector: # this allows ingress traffic from the staging api-pod 
+        matchLabels:
+          name: staging 
+    ports:
+    - protocol: TCP
+      port: 3306
+  egress: # add the egress block
+  - to:
+    - ipBlock:
+        cidr: 192.168.1.0/24
+    ports:
+    - protocol: TCP
+      port: 80
+
+```
+
+### what if you want to add multiple egress or ingress rules?
+
+each new rule begins with another - from: (ingress) or - to: (egress)
+
+ex for ingress 
+```
+spec:
+  podSelector:
+    matchLabels:
+      name: pod
+  policyType: 
+  - Ingress
+  ingress:
+  - from: 
+     ...
+     ...
+     ...
+  - from: 
+     ...
+     ...
+     ...
+
+```
+
+
+# Ingress Controllers + Resources
+- k8s clusters don't have an ingress controller by default 
+- Ingress: object that manages external access to the services in a cluster
+    - provides load balancing, SSL termiantionm and name-based virtual hosting 
+    - think of ingress as a layer 7 load balancer (like AWS ALB )
+    - you still have to publish ingress to the public (one time configuration)
+- gives a single, externally accessible URL that you can configure to route to different services based on the URL path 
+
+
+supported solutions: nginx, haproxy, traefik
+
+- the solution that you deploy is called the ingress controller
+- the configuration of the backend is called the Ingress resources
+    - resources are created with definition files 
+    
+
+### How to deploy ingress controller 
+    - nginx 
+    - contour
+    - haproxy
+    - traefik
+    - istio 
+
+Stopped at 11:13
