@@ -371,4 +371,101 @@ supported solutions: nginx, haproxy, traefik
     - traefik
     - istio 
 
-Stopped at 11:13
+### steps for creating an ingress controller
+1. create the ingress controller as a deployment type object 
+2. create a config map in order to feed the configuration data to your ingress controller
+3. create a service to expose the ingress controller to the outside world
+4. create a service account that has the correct permissions
+
+
+### ingress resource 
+- set of rules and configurations that is set on the ingress controller
+  - allows you to setup routing rules, etc.
+
+ingress resourec is created with a kubernetes yaml file 
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-resource
+spec:
+  backend:
+    serviceName: wear-service
+    servicePort: 80
+```
+
+### Ingress Resource - Rules 
+- create the rules when you need to specify where to route your traffic
+example:
+  - route to myonlinestore.com
+  - route to wear.myonlinestore.com
+  - route to watch.myonlinestore.com 
+  - everything else 
+
+you create different pods that will be different micro services to handle each specific url 
+- /returns -> routes you to a set of pods 
+- /support -> routes you to a set of pods 
+- /login -> routes you to a set of pods
+
+
+Configuring rules for the ingress resource 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: ingress-router-rules
+
+spec:
+  rules: 
+  - http:
+      paths:
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: login-service
+            port:
+              number: 80
+      - path: /watch
+        pathType: Prefix
+        backend:
+          service:
+            name: watch-service
+            port:
+              number: 80
+```
+
+Configuring rules for multiple domain names
+
+```
+apiVersion: 
+kind: Ingress
+metadata:
+  name: ingress-domain-names
+
+spec:
+  rules:
+  - host: azure.test.com
+    http:
+      paths:
+      - backend:
+          serviceName: wear-service
+          servicePort: 80
+  - host: aws.test.com
+    http:
+      paths:
+      - backend:
+          serviceName: aws-service
+          servicePort: 80
+```
+
+### useful ingress commands 
+
+- search for ingress resources 
+``` kubectl get ingress ```
+
+- replace an existing configuration 
+``` kubectl get ingress $name -o yaml > config.yml ```
+``` kubectl replace -f config.yml ```
