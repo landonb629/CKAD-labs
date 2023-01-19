@@ -1,4 +1,5 @@
 # Services 
+- a way to expose an application running on a set of pods as a network service
 - enable communication between components within and outside the application
 - helps us connect apps together, and users with apps 
 - services enable communication between different pods 

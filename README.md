@@ -50,6 +50,7 @@ the labs built in this repository will be using the demo application that is bui
 
 # labs to build   
 - command vs arg
+- revisit the services and networking portion
 
 
 
