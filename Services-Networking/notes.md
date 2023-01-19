@@ -356,6 +356,10 @@ spec:
     - you still have to publish ingress to the public (one time configuration)
 - gives a single, externally accessible URL that you can configure to route to different services based on the URL path 
 
+### what is the difference between Ingress and Ingress Controller?
+- Ingress: give services externally reachable URLs, load balance, SSL terminate
+- Ingress Controller: responsible for fulfilling the ingress  
+
 
 supported solutions: nginx, haproxy, traefik
 
