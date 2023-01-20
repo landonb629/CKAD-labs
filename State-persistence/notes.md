@@ -38,6 +38,91 @@ spec:
 ```
 
 ## Persistent volumes 
+- cluster wide pool of storage volumes 
+- pods can pull storage from this pool using persistent storage claims
+
+api object: PersistentVolume
+  configuration: 
+    - accessModes: specifies how the storage should be mounted on the host 
+        - ReadOnlyMany
+        - ReadWriteOnce
+        - ReadWriteMany 
+    - capacity: the amount of storage that is reserved for this volume
+        - storage: ex - 1Gi
+    - hostPath:
+        path:
+
+Different access modes 
+- ReadWriteOnce: volume can be mounted as read write by a single node 
+- ReadOnlyMany: volume can be mounted as read only by many
+- ReadWriteMany: volume can be mounted as read write for many nodes 
 
 
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+
+spec:
+  accessModes: 
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data
+```
+
+## Persistent volume claims
+- makes the storage available to the nodes 
+- persistent volumes and persistent volume claims are two different objects in k8s 
+
+admins create persistent volumes
+users create persistent volume claims 
+
+Binding 
+- persistent volume claims are bound to persistent volumes 
+- you can specifically choose your volumes with labels and selectors 
+
+1 to 1 relationship with claims and volumes, if your claim only takes up some of the volume, no other claim can fill the remaining space on that volume 
+
+persistent volume claim 
+- accessMode: tells what mode to mount the volume as
+- resources: type of resource that we are creating 
+    requests: 
+      storage: how much storage to make a request for
+- persistentVolumeReclaimPolicy:
+    - default = retain: keep the volume but no other claims can use it 
+    - delete: delete the volume once the claim has been deleted 
+    - recycle: delete the data from the volume and make it available for other claims to use 
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+
+```
+
+Deleting persistent volume claims 
+- you choose what happens to the volume once you have deleted the claim
+  by default: the persistent volume will be retained, it is not available for reuse 
+
+
+How to use a persistent volume claim inside of a POD 
+- under the volumes api object, you can use the persistentVolumeClaim: option with claimName:
+
+```
+volumes:
+  - name: pvc
+    persistentVolumeClaim:
+      claimName: claimName
+```
 
