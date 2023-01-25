@@ -85,6 +85,7 @@ Binding
 - you can specifically choose your volumes with labels and selectors 
 
 1 to 1 relationship with claims and volumes, if your claim only takes up some of the volume, no other claim can fill the remaining space on that volume 
+NOTE: you can map the persistent volume claim to multiple containers though
 
 persistent volume claim 
 - accessMode: tells what mode to mount the volume as
@@ -126,3 +127,139 @@ volumes:
       claimName: claimName
 ```
 
+
+## Storage Classes
+
+Dynamic provisioning of volumes 
+- you don't need to create a persistent volume because you can ues provisioners 
+- when you create a persistent volume claim, ,the provisioner will automatically create the volume for you
+
+
+you do this by create a storage class definition
+
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: google-storage
+provisioner: kubernetest.io/gce-pd
+```
+
+- add the storageClassName to the PVC definition and it will know to use the storage class
+
+
+## StatefulSets 
+- similar to a deployment, few differences
+- pods are created in a sequential order 
+- unique ordinal index to each pod, each pod gets a unique name (no random names) it will be the name of the set plus -0 (this increments)
+- names are the same even if the pod crashes
+
+
+### Configuration of stateful sets 
+- configured the same as deployments, just change the kind to StatefulSet
+- you must add the name of a headless service
+- you can override to remove the stateful set ordered approach
+
+
+after you deploy:
+- ordered, graceful pod deployment
+- stable, unique network DNS name 
+
+
+## Headless Service
+
+what does a headless service do?
+- gives us a way to reach into a specific pod without having to have the service do load balancing 
+- for headless services no cluster IP is allocated 
+- just created DNS entries for each pod 
+example headless service dns entry: ``` podname.headless-servicename.namespace.svc.cluster-domain ``` 
+
+
+How do you create a headless service?
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-h
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+  clusterIp: None
+```
+
+
+How do you associate a headless service with pods?
+- the subdomain field below spec, must be the same name as the headless service
+- you must also specify the hostname option, this is what creates the DNS record 
+
+
+## Storage in StatefulSets 
+- if you did a persistent volume claim in the StateFulSet, all of the pods would share the claim, that is not always the intended outcome. 
+
+So how do we make sure that each pod will get its own claim?
+- persistent volume claim template, This is something that gets added on to the pod configuration 
+- its an array so you can specify multiple templates 
+
+what if a pod fails?
+- if the pod fails and comes back up, the statefulset will make sure that the pod gets attached to the same PV
+
+StatefulSet definition file 
+``` 
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: 
+  name: mysql
+  labels:
+    app: mysql
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: data-volume
+  volumeClaimTemplates:
+  - metadata:
+      name: data-volume
+    spec:
+      accessModes: 
+        - ReadWriteOnce
+    storageClassName: google-storage
+    resources:
+      requests:
+        storage: 500Mi
+```
+
+
+
+
+# Conclusion 
+
+Topics covered 
+- using volumes in kubernetes 
+- persistent volumes
+- persistent volume claims
+- storage classes 
+- stateful sets: deployment and scaling of pods, ensures ordering and uniqueness of these pods, statefulsets require a headless service to be created
+- headless services
+- how to handle storage in stateful sets
+
+
+Labs to create 
+
+1. create an ubuntu container with a volume mounted to the /opt directory, create a file in that directory, destroy the pod, recreate the pod with another pod, attach the volume and see if your file persisted
+2. create a Persistent volume and inspect the volume, create a pod with a persistent volume claim, check the volume status, remove your pod, remove your persistent volume 
+3. create a stateful set for an nginx container, with a headless service, that has a persistent volume claim for each pod 
