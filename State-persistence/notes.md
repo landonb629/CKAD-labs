@@ -254,7 +254,8 @@ Topics covered
 - persistent volume claims
 - storage classes 
 - stateful sets: deployment and scaling of pods, ensures ordering and uniqueness of these pods, statefulsets require a headless service to be created
-- headless services
+    - useful for applications where you need unique network identifiers, persistent storage, graceful and ordered deployment and scaling 
+- headless services: deploys a service without load balancing and a single IP address
 - how to handle storage in stateful sets
 
 

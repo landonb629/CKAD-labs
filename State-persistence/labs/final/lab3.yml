@@ -1,0 +1,54 @@
+# creating a headless service that has a clusterIP of none
+apiVersion: v1
+kind: Service 
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+
+spec:
+  clusterIP: None
+  ports:
+  - port: 80
+    targetPort: 80
+  selector: 
+    app: nginx
+
+# creating the stateful set
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  serviceName: "nginx"
+  replicas: 3 
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+          - containerPort: 80
+            name: web
+          volumeMounts:
+          - name: www
+            mountPath: /opt/
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Mi
