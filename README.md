@@ -65,3 +65,19 @@ environment variables
 command vs arg
 taints - these are set on nodes 
 tolerations - these are set on the pods
+
+
+
+
+Kubernetes Cluster Setup
+Understand Kubeconfig File
+Understand Kubernetes Objects And Resources
+Learn About Pod & Associated Resources
+Learn Pod Dependent Objects
+Learn Ingress & Ingress Controllers
+Learn End to End Microservices Application Deployment on Kubernetes
+Learn About Securing Kubernetes Cluster
+Learn About Kubernetes Configuration Management Tools
+Learn About Kubernetes Operator Pattern
+Learn Important Kubernetes Configurations
+Learn Kubernetes Best Practices
