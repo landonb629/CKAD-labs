@@ -261,6 +261,27 @@ webhooks:
       scope: "Namespaced"
 ```
 
+## securityContexts 
+- defines the privileges and access control settings for a pod or container 
+- security contexts can include the following:
+  - discretionary access controls
+  - SELinux
+  - Running as privileged or unprivileged 
+  - linux Capabilities 
+  - AppArmor
+
+example of using securityContext on a pod 
+```
+apiVersion: v1
+kind: Pod 
+metadata:
+
+spec: 
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+```
 
 
 
