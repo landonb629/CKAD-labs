@@ -181,6 +181,88 @@ How to impersonate another user?
 - kubectl auth can-i create deployments --as dev-user
 
 
+# ClusterRoles and ClusterRoleBindings
+so far, most of our resources have been scoped to a specfic namespace, if you do not create a namespace or specify one, then the resources are created in the default namespace
+- ClusterRoles are visible to the entire cluster
+
+cluster scoped resources
+- nodes
+- PV
+- clusterroles
+- clusterrolebindings
+- certificatesigningrequests
+- namespaces
+
+To create a cluster role in kubernetes, change the kind to ClusterRole 
+- you then need to link the user to the cluster role, use the kind ClusterRoleBinding
+
+
+# Admission Controllers
+- intercepts requests to the kube API-server 
+- evaluated after authentication and authorization has already taken place
+- helps to make sure certain criteria is met, ex: pods cannot be created if they are using images from a public registry
+- handles validating and mutating 
+
+default admission controllers
+- AlwaysPullImages
+- DefaultStorageClass
+- EventRateLimit
+- NamespaceExists
+
+How to view the admission controllers that are enabled 
+``` kube-apiserver -h | grep enable-admission-plugins ``` 
+
+How to enable / disable admission controllers
+- edit the kubernetes service
+- if using kubeadm, edit the kube-apiserver manifest
+
+## Validating and Mutating Admission Controllers
+Validating Admission Controllers - validating the request (making sure the request is permitted)
+Mutating Admission Controllers - change the api request 
+- There are admission controllers can do both 
+- usually the mutating controller runs before the validating controller
+
+You can create your own Admission controllers 
+These admission controllers are enabled for us to create custom admissions controllers
+- MutatingAdmission webHook
+- ValidatingAdmission WebHook
+
+Dynamic Admission Control - custom admission controllers 
+- admission webhooks: receive admission requests and do something with them
+
+  How to use?
+  - verify that MutatingAdmissionWebhook and ValidatingAdmissionWebhook are enabled
+  - ensure admissionregistration.k8s.io/v1 API is enabled
+
+  1. deploy an admission webhook server 
+  2. configure the admission webhook
+
+
+
+example of webhook
+```
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: "pod-policy.example.com"
+
+webhooks:
+- name: "pod-policy.example.com"
+  clientConfig:
+    service:
+      namespace: "webhook-namespace"
+      name: "webhook-service"
+    caBundle: "skdhfjiuebiue"
+  rules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods"]
+      scope: "Namespaced"
+```
+
+
+
 
 
 # Summary 
@@ -190,8 +272,45 @@ Topics
 - kubeconfig (create a lab)
 - API groups 
 - roles + role bindings (create a lab)
+- cluster roles + cluster role bindings 
+- admission controllers (validating, and mutating)
+
 
 Labs 
 1. using static files, create a dev user in kubernetes 
 2. adding a user to the kubeconfig and giving access to the development namespace
 3. creating a role binding for a user only allowing them to list pods in a namespace
+
+
+1. a new user called test-user is being created, create a cluster role that gives this user the ability to create namespaces, create the cluster role binding for the users to the role also
+
+
+outline of a cluster role 
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole 
+metadata:
+
+rules:
+- apiGroup: []
+  resources: []
+  verbs: []
+```
+
+outline of cluster role binding 
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+
+subjects:
+- kind:
+  name:
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+   kind: ClusterRole
+   name: 
+   apiGroup: rbac.authorization.k8s.io
+```
