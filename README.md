@@ -54,30 +54,37 @@ the labs built in this repository will be using the demo application that is bui
 
 
 
-# terms to rememeber 
-Pod 
-configMap
-Secrets
-ReplicaSet
-ReplicationController
-Entrypoint
-environment variables 
-command vs arg
-taints - these are set on nodes 
-tolerations - these are set on the pods
 
 
+# finished the course 
+25% - Application Environment, Configuration, and Security
+        - [] Discover and use resources that extend K8s 
+        - [] Understand authentication, authorization and admission control 
+        - [] Understanding and defining resource requirements, limits, and quotas 
+        - []understand ConfigMaps
+        - [] Create and consume secrets 
+        - [] understand ServiceAccounts
+        - [] understand SecurityContexts
 
+20% - Application Design and Build 
+        - [] Define, build and modify container images 
+        - [] Understand jobs and CronJobs 
+        - [] Understand multi-container Pod design patters 
+        - [] Utilize persistent and ephemeral volumes
 
-Kubernetes Cluster Setup
-Understand Kubeconfig File
-Understand Kubernetes Objects And Resources
-Learn About Pod & Associated Resources
-Learn Pod Dependent Objects
-Learn Ingress & Ingress Controllers
-Learn End to End Microservices Application Deployment on Kubernetes
-Learn About Securing Kubernetes Cluster
-Learn About Kubernetes Configuration Management Tools
-Learn About Kubernetes Operator Pattern
-Learn Important Kubernetes Configurations
-Learn Kubernetes Best Practices
+20% - Application Deployment 
+        - [] Use Kubernetes primitives to implement common deployment strategies 
+        - [] understand deployments and how to perform rolling updates
+        - [] use the helm package manager to deploy existing packages 
+
+20% - Services and Networking 
+        - [] Demonstrate basic understanding of NetworkPolicies 
+        - [] Provide and troubleshoot access to applications via services
+        - [] Use Ingress rules to expose applications
+
+15% - Application observability and maintenance 
+        - [] Undersand API deprecations 
+        - [] Implement probes and heath checks
+        - [] use provided tools to monitor Kubernetes applications 
+        - [] Utilized container logs 
+        - [] Debugging in Kubernetes
