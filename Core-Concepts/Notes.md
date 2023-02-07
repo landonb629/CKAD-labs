@@ -163,6 +163,31 @@ kubectl get all
 
 - Rolling updates: updating each instance one by one, only taking on container offline at a time 
 
+### Blue / Green Deployments 
+- recreate: destroy all the existing, and bring up the new pods 
+- rolling update: take down the older version and bring up a new version, one by one 
+- blue / green: new version is deployed along side the new version 
+
+How does blue green work?
+- we have our original version of our application running as a deployment with the label v1
+- we create a service that has a selector of v1 on it 
+- we create a new deployment with the label of v2 on it 
+- we change the selector on the service to use v2
+
+
+### canary updates
+- we want to bring up a new deployment that will route traffic to both at the same time 
+- in order for the service to route to both, we would need to add a common label to both of the deployments 
+- canary deployments do not offer a lot of control on the percentage of traffic that gets routed to each
+- to control how much traffic is routed to each, reduce the number of pods in the canary deployment
+ 
+
+
+What is a service mesh?
+- tool that inserts security, observability, and reliability features to applications at the platform layer instead of the application layer
+- manages network traffic between services 
+- implemented as a set of network proxies 
+
 
 ## Namespaces
 - the default namespace is created and used at first when kubernetes is first setup

@@ -56,3 +56,10 @@ schema: // schema is where we are actually stating what we allow to supply as in
 
 - after you create your custom resource definition, you will be able to store in ETCD
 - this resource wont be able to do anything without a custom controller to go along with it 
+
+## Custom Controllers
+- should probably be written in GO 
+- you declare the desired state of your resource. the kubernetes controller keeps the current state of kubernetes objects in sync with your declared state 
+
+
+## Operator framework 
