@@ -1,0 +1,1 @@
+1. create a configMap, then create a script to echo the config map to a location on an ephemeral volume 

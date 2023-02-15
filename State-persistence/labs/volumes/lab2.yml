@@ -1,0 +1,46 @@
+apiVersion: v1 
+kind: PersistentVolume 
+metadata:
+  name: pv0001
+  labels:
+    app: dev
+spec:
+  capacity:
+    storage: 200Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data
+  storageClassName: manual
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim01
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Mi 
+  selector: 
+    matchLabels:
+      app: dev
+  storageClassName: manual
+--- 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: claim-user
+spec:
+  containers:
+    - name: claim-container
+      image: ubuntu
+      command: ["bash", "-c", "tail -f > /dev/null"]
+      volumeMounts:
+      - mountPath: /tmp/
+        name: claim01
+  volumes: 
+    - name: claim01
+      persistentVolumeClaim:
+        claimName: claim01

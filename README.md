@@ -61,7 +61,7 @@ the labs built in this repository will be using the demo application that is bui
         - [] Discover and use resources that extend K8s 
         - [] Understand authentication, authorization and admission control 
         - [] Understanding and defining resource requirements, limits, and quotas 
-        - []understand ConfigMaps
+        - [] understand ConfigMaps
         - [] Create and consume secrets 
         - [] understand ServiceAccounts
         - [] understand SecurityContexts
@@ -69,8 +69,8 @@ the labs built in this repository will be using the demo application that is bui
 20% - Application Design and Build 
         - [] Define, build and modify container images 
         - [] Understand jobs and CronJobs 
-        - [] Understand multi-container Pod design patters 
-        - [] Utilize persistent and ephemeral volumes
+        - [x] Understand multi-container Pod design patterns 
+        - [x] Utilize persistent and ephemeral volumes
 
 20% - Application Deployment 
         - [] Use Kubernetes primitives to implement common deployment strategies 
