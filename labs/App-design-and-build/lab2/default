@@ -1,0 +1,15 @@
+events { 
+    worker_connections 1024;
+}
+http{ 
+server { 
+   listen 80;
+   server_name ckaddev.com;
+
+   location / { 
+    proxy_pass "http://localhost:3000";
+}
+
+
+}
+}
