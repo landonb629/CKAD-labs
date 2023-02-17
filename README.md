@@ -60,15 +60,15 @@ the labs built in this repository will be using the demo application that is bui
 25% - Application Environment, Configuration, and Security
         - [] Discover and use resources that extend K8s 
         - [] Understand authentication, authorization and admission control 
-        - [] Understanding and defining resource requirements, limits, and quotas 
-        - [] understand ConfigMaps
+        - [] Understanding and defining resource requirements, limits, and quotas - DOING THIS TODAY
+        - [x] understand ConfigMaps
         - [] Create and consume secrets 
         - [] understand ServiceAccounts
         - [] understand SecurityContexts
 
 20% - Application Design and Build 
         - [] Define, build and modify container images 
-        - [] Understand jobs and CronJobs 
+        - [x] Understand jobs and CronJobs 
         - [x] Understand multi-container Pod design patterns 
         - [x] Utilize persistent and ephemeral volumes
 

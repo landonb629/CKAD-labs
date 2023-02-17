@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: demojob
+
+spec:
+  parallelism: 2
+  completions: 8
+  template:
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command: ["/bin/sh", "-c", "echo 'hello from k8s job'"]
+      restartPolicy: OnFailure

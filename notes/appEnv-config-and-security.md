@@ -15,3 +15,17 @@ data:
         listen 80;
     }
 ```
+
+
+basic config map to pass in environment variables 
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demoConfigmap
+
+data:
+  NODE_ENV: "development"
+  MONGODB_URL: "http://localhost:27017"
+```

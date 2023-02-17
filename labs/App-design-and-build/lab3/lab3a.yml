@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: lab3a
+
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: busybox
+              image: busybox
+              command: ["/bin/sh", "-c", "echo 'hello from k8s cronjob'"]
+          restartPolicy: OnFailure

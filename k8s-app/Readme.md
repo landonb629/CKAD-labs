@@ -5,3 +5,11 @@ Basic MERN application
 - allows users to visualize their k8s environment
 
 
+
+k8s resources used 
+
+- network policies 
+- config maps 
+- secrets 
+- deployments
+- services 
