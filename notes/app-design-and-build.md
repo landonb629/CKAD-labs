@@ -54,3 +54,38 @@ Multicontainer design patterns
 - sidecar: used for logging utility, sync services, watchers, and monitoring agents
 - adapter: standardize application output for monitoring or aggregation
 - ambassador: connect container to the outside world, could be a proxy container
+
+
+# CronJobs and Jobs 
+
+- CronJobs: meant to be used to perform regular scheduled actions such as backups, report generation, and more 
+  - runs a specific job on a periodic time schedule like linux crons 
+  - these can take in all the same parameters as Jobs in k8s but the cronJob is nested one layer deeper than Jobs 
+
+- Jobs: creates one or more pods and will continue to retry execution of the pods until a specified number of them successfully terminate, when a specified number of successful runs occurs, the task is complete 
+
+Options for Jobs and CronJobs 
+- spec.parralelism: sets how many jobs should run at the same time
+- spec.backofflimit: failing a job after some amount of retires, backoff limit specifies the number of retries wbefore a job is considered as failed
+- spec.ttlSecondsAfterFinished: when to delete the job and associated resources after the job has been completed
+
+CronJob vs Job: 
+
+CronJob
+```
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+```
+
+Job
+```
+spec:
+  template:
+    spec:
+      containers:
+```

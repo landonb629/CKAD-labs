@@ -7,6 +7,8 @@ spec:
   schedule: "* * * * *"
   jobTemplate:
     spec:
+      parallelism: 2 
+      backoffLimit: 4
       template:
         spec:
           containers:

@@ -6,6 +6,8 @@ metadata:
 spec:
   parallelism: 2
   completions: 8
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 30
   template:
     spec:
       containers:
