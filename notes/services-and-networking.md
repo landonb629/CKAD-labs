@@ -10,7 +10,8 @@
 - Ingress Controller: 
     - proxy running in the cluster that is exposed via a nodeport of loadbalancer
     - single configurable entrypoint for all services in the cluster
-    - example: nginx, HA proxy, istio
+    - example: nginx, HA proxy, envoy, traefik
+- Cluster IP:
 
 Ingress resources cannot work without an ingress controller, ingress controllers act as a load balancer for your ingress resources.
 

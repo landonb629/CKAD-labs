@@ -62,7 +62,7 @@ the labs built in this repository will be using the demo application that is bui
         - [] Understand authentication, authorization and admission control 
         - [] Understanding and defining resource requirements, limits, and quotas - DOING THIS TODAY
         - [x] understand ConfigMaps
-        - [] Create and consume secrets 
+        - [x] Create and consume secrets 
         - [] understand ServiceAccounts
         - [] understand SecurityContexts
 
@@ -88,3 +88,10 @@ the labs built in this repository will be using the demo application that is bui
         - [] use provided tools to monitor Kubernetes applications 
         - [] Utilized container logs 
         - [] Debugging in Kubernetes
+
+
+lightning lab 2 
+- create a cronjob that only runs once, it is considered failed after 20 seconds
+- create a pod that maps a secret as a volume, make sure that is it only scheduled on the control plan (node affinity)
+- configuring ingress routing for different hosts, each path should take you to a different service 
+- outputting a log file that matches specific criteria to a different 

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  name: htmldata
+data:
+  index.html: | 
+    <h1>hello from config map</h1>
+--- 
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: nginx-pod
+spec:
+  containers: 
+    - name: nginx-pod 
+      image: nginx
+      volumeMounts:
+        - name: htmldata
+          mountPath: /usr/share/nginx/html/
+  volumes: 
+    - name: htmldata
+      configMap:
+        name: htmldata
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: nginx-expose 
+spec:
+  selector:
+    name: nginx-pod 
+  type: NodePort
+  ports: 
+    - protocol: TCP 
+      port: 80
+      targetPort: 80
+      nodePort: 30007
