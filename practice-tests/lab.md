@@ -5,27 +5,12 @@
 
 
 
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deploy
-
-spec:
-  replicas: 4
-  selector:
-    matchLabels:
-      app: nginx
-  strategy:
-    type: RollingUpdate
-      maxUnavailable: 2
-      maxSurge: 1
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      container:
-        - name: nginx
-          image: nginx:1.16
+# Mock exam 2 
+- create a deployment that is exposed with a service of type nodeport SERVICES + DEPLOYMENTS
+- add a taint to a node in the cluster, create a pod with that toleration TAINTS AND TOLERATIONS
+- apply a label to a node, create a deployment with nodeaffinity for that NODE AFFINITY
+- create an ingress resource, to for host "foo.bar.com" on port 30092 INGRESS 
+- create a job that has a backofflimit, completion amount, restart policy set to never JOBS
+- create a readiness probe for a pod that checks an HTTP path of /path with the port of 8080 READINESS PROBE
+- create a liveness probe that checks for a file at /var/www/html/live and restarts after 60 seconds LIVENESS PROBE
+- create a multicontainer pod where two contianers take in environment variable values MULTI-CONTAINER PODS AND ENVIRONMENT VARIABLES

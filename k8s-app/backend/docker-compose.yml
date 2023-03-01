@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: ["npm", "start"]
+    tty: true
+    stdin_open: true
+    volumes:
+      - type: bind 
+        source: .
+        target: /usr/src/app
+    ports:
+      - 3030:3030
+  
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes: 
+      - db-volume:/data/db
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  db-volume:

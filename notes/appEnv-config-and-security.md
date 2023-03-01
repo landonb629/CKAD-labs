@@ -1,5 +1,12 @@
 # CKAD area - Application Environment, Configuration, and Security 
 
+## Discover and use resources that extend k8s 
+
+
+## Understand authentication, authorization and admission control
+
+## Understand defining resource requirements, limits, and quotas
+
 ## Understand ConfigMaps 
 - used for storing non-confidential configuration data in key-value pairs. 
 - can be consumed as env variables, command line args, or as config files in a volume 
@@ -53,3 +60,9 @@ the easiest way to create secrets is with the kubectl command
 #### Private container registries 
 - you can use secrets to store credentials for private container registries 
 - these are called image pull secrets 
+
+
+## Understand ServiceAccounts
+
+
+## understand SecurityContexts 

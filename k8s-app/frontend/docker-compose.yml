@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: ["npm", "start"]
+    ports:
+      - 3000:3000
+    volumes:
+      - type: bind 
+        source: .
+        target: /usr/src/app
+    
