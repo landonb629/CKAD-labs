@@ -63,7 +63,7 @@ the labs built in this repository will be using the demo application that is bui
         - [] Understanding and defining resource requirements, limits, and quotas - DOING THIS TODAY
         - [x] understand ConfigMaps
         - [x] Create and consume secrets 
-        - [] understand ServiceAccounts
+        - [x] understand ServiceAccounts
         - [] understand SecurityContexts
 
 20% - Application Design and Build 

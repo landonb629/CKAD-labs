@@ -4,6 +4,18 @@
 
 
 ## Understand authentication, authorization and admission control
+- authorization: what actions is the identity permitted to perform?
+- authentication: who is this identity? are they allowed to access this resource?
+
+Roles and ClusterRoles 
+- contain the information about what permissions are permitted 
+- Roles are namespaced 
+- ClusterRoles are not namespaced
+
+RBAC: role based access control
+
+RoleBinding and ClusterRoleBinding
+- bindings are how you tell k8s that a role is to be connected to a set of users of service accounts 
 
 ## Understand defining resource requirements, limits, and quotas
 
@@ -63,6 +75,51 @@ the easiest way to create secrets is with the kubectl command
 
 
 ## Understand ServiceAccounts
+- pods use service accounts to communicate with the kubernetes API server with an authentication token
+- if you don't specify a service account, the pod gets "default" which has the same permissions as a use with no auth
+
+Manuall creating an API token for a service account 
+
+``` kubectl create token sa-name ```
+
+automatically generate an API token for a service account
+- use an annotation with the service account account name as a secret
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-sa
+  annotations:
+    kubernetes.io/service-account.name: secret-account
+```
+
+
+querying service accounts?
+``` kubectl get serviceaccounts ```
+``` kubectl get sa ```
+
+High level steps to using service accounts
+- create the service account object in k8s 
+- grant the service account permissions 
+- assign the serviec account object to pods during creation
+
+granting permissions 
+- permissions can be granted from built-in RBAC by creating a role, and roleBinding
 
 
 ## understand SecurityContexts 
+- a security context defines privilege and access control settings for a pod or a container
+
+securityContext
+- settings defined on the pod level apply to all containers running in the pod 
+- container level settings take precedence 
+
+example use case for securityContexts:
+- you don't want any containers in a pod to run as the root user
+
+```
+spec:
+  securityContext:
+    runAsNonRoot: true
+```

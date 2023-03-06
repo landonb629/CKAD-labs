@@ -8,3 +8,6 @@ c. create a configMap with the following as data, using an nginx container, map 
 index.html: | 
     <h1>Hello from configMap</h1>
 ```
+
+
+d. create a service account called pod-reader, assign permissions to this pod that allows it to read pods in the cluster. mount this service account to a pod using the landonbabay/ckad-serviceaccount image
