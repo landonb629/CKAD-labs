@@ -14,8 +14,8 @@ rules:
   resources: ["pods"]
   verbs: ["get", "watch", "list"]
 ---
-apiVersion: rbac.authorization.k8s.io
-kind: ClusterRoleBindings
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
 metadata:
   name: pod-reader-to-role
   namespace: default
@@ -27,3 +27,12 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: pod-reader-role
+---
+# secrets are no longer manually generated for service accounts 
+apiVersion: v1 
+kind: Secret 
+metadata:
+  name: pod-reader-secret
+  annotations:
+    kubernetes.io/service-account.name: pod-reader
+type: kubernetes.io/service-account-token
