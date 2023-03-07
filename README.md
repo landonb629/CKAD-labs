@@ -38,20 +38,6 @@ the labs built in this repository will be using the demo application that is bui
 
 
 
-# labs built 
-- secrets
-- entrypoint 
-- environment variables
-- Config-maps
-- pods 
-- resource limits
-- service accounts (revision: create a small application that will query the k8s API)
-- taints and tolerations 
-
-# labs to build   
-- command vs arg
-- revisit the services and networking portion
-
 
 
 
@@ -64,10 +50,10 @@ the labs built in this repository will be using the demo application that is bui
         - [x] understand ConfigMaps
         - [x] Create and consume secrets 
         - [x] understand ServiceAccounts
-        - [] understand SecurityContexts
+        - [x] understand SecurityContexts
 
 20% - Application Design and Build 
-        - [] Define, build and modify container images 
+        - [x] Define, build and modify container images 
         - [x] Understand jobs and CronJobs 
         - [x] Understand multi-container Pod design patterns 
         - [x] Utilize persistent and ephemeral volumes

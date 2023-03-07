@@ -1,7 +1,26 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+dotenv.config();
+const config = require('config')
+const username = config.get('db.username')
+const password = config.get('db.password')
+const url = config.get('db.url')
 
-const connectDB = () => { 
-    return mongoose.connect('mongodb://10.11.0.21:27017')
+const dbConnection = () => { 
+    try {  
+        return mongoose.connect("mongodb://db:27017", { //url,{
+           // auth: { 
+           //     username: username,
+           //     password: password
+           // },
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            retryWrites: false
+        })
+
+    } catch(error) { 
+        console.log(error)
+    }
 }
 
-module.exports = connectDB
+module.exports = dbConnection

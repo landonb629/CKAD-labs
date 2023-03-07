@@ -1,11 +1,13 @@
-from node 
+FROM --platform=linux/x86_64 node:16-alpine 
 
-WORKDIR /usr/src/app 
+WORKDIR /usr/src/frontend
 
-COPY package.json package-lock.json /usr/src/app/
+COPY package-lock.json package.json /usr/src/frontend/ 
 
-RUN npm install 
+RUN npm install  
 
-COPY . /usr/src/app/
+COPY . . 
 
-ENTRYPOINT [ "npm", "start" ]
+EXPOSE 3000
+
+#NTRYPOINT ["npm", "start"]

@@ -10,4 +10,6 @@ index.html: |
 ```
 
 
-d. create a service account called pod-reader, assign permissions to this pod that allows it to read pods in the cluster. mount this service account to a pod using the landonbabay/ckad-serviceaccount image
+d. create a service account called pod-reader, assign permissions to this pod that allows it to read pods in the cluster. mount this service account to a pod using the nginx image. verify that your service account has access to get pods with the can-i command
+
+f. create a deployment using the nginx image, The pod should have all capabilities dropped, and there should be an added security context that does not allow for running as root, add 3 replicas.
