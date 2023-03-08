@@ -12,4 +12,12 @@ index.html: |
 
 d. create a service account called pod-reader, assign permissions to this pod that allows it to read pods in the cluster. mount this service account to a pod using the nginx image. verify that your service account has access to get pods with the can-i command
 
-f. create a deployment using the nginx image, The pod should have all capabilities dropped, and there should be an added security context that does not allow for running as root, add 3 replicas.
+e. create a deployment using the nginx image, there should be a security context configuration added with the runAsUser = 2000, add 3 replicas.
+    - go into one of the pods with
+        ``` kubectl exec $podname -i -t -- /bin/bash ```
+    - run the following command 
+        ``` ps -aux ```
+    if you see the processes running as user 2000. you did the lab correctly
+
+f. create a new namespace called limited-dev, create a resource quota where the cpu and memory limits cannot exceed 1 cpu and 1Gi memory, and the cpu and memory requests cannot exceed 1 CPU and 1 memory
+    - create a pod with a resource request for 1050Mi memory and 1050 cpu, if this fails, you completed the lab correctly

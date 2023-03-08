@@ -28,7 +28,6 @@ roleRef:
   kind: ClusterRole
   name: pod-reader-role
 ---
-# secrets are no longer manually generated for service accounts 
 apiVersion: v1 
 kind: Secret 
 metadata:

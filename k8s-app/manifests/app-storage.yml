@@ -1,0 +1,24 @@
+# storage for mongodb
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-pv
+spec: 
+  storageClassName: "local"
+  capacity:
+    storage: 1Gi
+  accessModes: 
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain 
+  hostPath:
+    path: /mongo-data
+    type: Directory
+    
+    

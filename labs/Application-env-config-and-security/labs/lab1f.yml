@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: cpu-mem
+spec:
+  hard: 
+    requests.cpu: '1'
+    requests.memory: 1Gi
+    limits.cpu: '1'
+    limits.memory: 1Gi
+---
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: big-pod
+spec:
+  containers:
+    - name: big
+      image: nginx
+      resources:
+        requests:
+          memory: '1050Mi'
+          cpu: "1050m"

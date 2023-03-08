@@ -59,6 +59,21 @@ Authentication methods
 
 
 ## Understand defining resource requirements, limits, and quotas
+- k8s does not enforce any quotas for compute resources, so unlimited resources can be used until the max available is reached 
+
+K8s measures CPU in millicores and memory in bytes
+
+quotas 
+- ResourceQuotas will limit the usable resources for each namespace
+- the kubernetes scheduler takes care of those rules 
+
+The following limits can be defined: 
+- object count quotas: total number of a certain object
+- compute resource quotas: limits the total sum of compute resources for a requested namespace 
+  - limits.cpu
+  - limits.memory
+  - requests.cpu
+  - requests.memory 
 
 ## Understand ConfigMaps 
 - used for storing non-confidential configuration data in key-value pairs. 
