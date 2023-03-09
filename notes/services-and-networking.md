@@ -61,3 +61,102 @@ NOTE:
  - for connections to be successful, they must be allowed egress from the sender pod, and allowed ingress to the receiver pod
  - if one of the two (ingress or egress) is not permitted, the connection will fail
 
+network policy resource template
+ ```
+ apiVersion: networking.k8s.io/v1
+ kind: NetworkPolicy
+ metadata:
+   name: 
+   namespace:
+   labels:
+spec:
+  podSelector:
+    matchLabels:
+  policyTypes:
+    - Ingress
+    - Egress 
+  ingress:
+    - from:
+        - ipBlock:
+            cidr:
+            except: 
+        - namespaceSelector:
+            matchLabels:
+              project:
+        - podSelector:
+            matchLabels:
+      ports:
+        - protocol:
+          port:
+  egress:
+    - to:
+        - ipBlock:
+            cidr:
+      ports:
+        - protocol:
+          port:
+ ```
+
+- podSelector: selects the group of pods where the policy applies 
+- policyTypes: Ingress or Egress (or both), tells which type of traffic the policy applies to
+- ingress: allows traffic that matches the from and ports section, you can specify an ipBlock, namespaceSelector, or podSelector (or all)
+- egress: allows traffic that matches the to and ports section
+
+
+Default policies 
+
+- ingress deny all 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+```
+
+- egress deny all 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+```
+
+- ingress allow all 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-ingress
+spec:
+  podSelector: {}
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+```
+
+- egress allow all 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress
+spec:
+  podSelector: {}
+  egress:
+  - {}
+  policyTypes:
+  - Egress
+```
