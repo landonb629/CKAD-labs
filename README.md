@@ -46,7 +46,7 @@ the labs built in this repository will be using the demo application that is bui
 25% - Application Environment, Configuration, and Security
         - [] Discover and use resources that extend K8s 
         - [x] Understand authentication, authorization and admission control 
-        - [] Understanding and defining resource requirements, limits, and quotas
+        - [x] Understanding and defining resource requirements, limits, and quotas
         - [x] understand ConfigMaps
         - [x] Create and consume secrets 
         - [x] understand ServiceAccounts

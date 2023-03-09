@@ -29,6 +29,26 @@ what is a context?
 - stores acces info under a name 
   - this would be the cluster, user, and namespace
 
+What is an admission controller?
+- code that intercepts requests to the kube api server before the creation of the object, but after the request is authenticated 
+- two types of admission controllers: validating or mutating 
+
+Mutating: modify objects related to request
+Validating: do not modify, they make sure the request is aligned with policy
+
+Control phases:
+1. mutating controllers are run
+2. validating controllers are run 
+
+enabling admission controllers
+
+``` kube-apiserver --enable-admission-plugins=ONE,TWO,THREE ``` 
+
+How to view the controllers enabled by default 
+
+``` kube-apiserver -h | grep enable-admission-plugins ``` 
+
+
 #### Authentication in Kubernetes 
 
 Users in k8s 
@@ -56,6 +76,25 @@ Authentication methods
 - Static Token File 
     - API server takes the bearer token from a file with --token-auth-file=FILE
 
+  
+## Authorization in Kubernetes 
+- authentication comes before authorization 
+
+Authorization modes 
+- node: grants permissions to kubelets based on the pods they are scheduled to run
+- ABAC: attribute based access control, rights granted through policies that combine attributes of users, the environment, and resources
+- RBAC: permissions granted based on roles an individual possesses. 
+- Webhook: an HTTP callback 
+
+How to check api access 
+- auth can-i sub command 
+  - this subcommand queries the authorization layer 
+
+``` kubect auth can-i creat pods ``` 
+
+you can impersonate users or service accounts 
+
+``` kubectl auth can-i list pods --as system:serviceaccount:pod-reader ``` 
 
 
 ## Understand defining resource requirements, limits, and quotas
