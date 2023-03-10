@@ -160,3 +160,52 @@ spec:
   policyTypes:
   - Egress
 ```
+
+## Services 
+- services allow us to expose our applications to enternal consumers
+- services provide load balancer and pod replicas 
+- services choose their backend by using label selectors 
+
+Service types: 
+- ClusterIp: service is exposed with an internal IP address, cannot be externally routed 
+- NodePort: Exposes the service on each nodes IP address on a static port, node port can range from 30000-32767
+- LoadBalancer: exposes the service externally using a cloud providers load balancer
+- ExternalName: Maps a service to a DNS name
+
+Creating services 
+
+- Imperatively 
+
+- This creates a standalone service
+``` kubectl create service clusterip nginx-service --tcp=80:80 ```
+
+- This exposes a specific pod 
+``` kubectl expose deployment my-deployment --port=80 --target-port=80 ```
+
+- Declaratively 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+ type: ClusterIp
+ selector:
+   app: nginx-service
+ ports:
+ - port: 80
+   targetPort: 80
+```
+
+Port mapping
+- a service defined two different ports:
+  - incoming port accepting traffic
+  - outgoing port called, target port 
+
+incoming traffic --> port 3000 (service port) --> port 80 (service target port) --> containerPort
+
+port: this is the port that you will direct external clients to
+targetPort: this is the backend port that will distribute to your pods
+
+ 

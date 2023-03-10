@@ -64,8 +64,8 @@ the labs built in this repository will be using the demo application that is bui
         - [] use the helm package manager to deploy existing packages 
 
 20% - Services and Networking 
-        - [] Demonstrate basic understanding of NetworkPolicies 
-        - [] Provide and troubleshoot access to applications via services
+        - [x] Demonstrate basic understanding of NetworkPolicies 
+        - [x] Provide and troubleshoot access to applications via services
         - [] Use Ingress rules to expose applications
 
 15% - Application observability and maintenance 
