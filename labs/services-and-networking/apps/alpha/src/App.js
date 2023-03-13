@@ -9,7 +9,11 @@ import Blue from './components/Blue'
 
 function App() {
   return (
-    <div>alpha app</div>
+    <main style={{display: 'flex', justifyContent: 'center', background: 'red'}}>
+      <div>
+        <h2>Hello from the alpha application</h2>
+      </div>
+    </main>
   );
 }
 

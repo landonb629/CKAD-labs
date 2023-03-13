@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Pod 
-metadata:
-  name: utility
-
-spec:
-  containers:
-    - name: utility
-      image: praqma/network-multitool
