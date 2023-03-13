@@ -51,4 +51,4 @@ spec:
           image: lbabay.azurecr.io/backend:v1.0
           env:
             - name: DB
-              value: 
+              value: #This is where the clusterIP of mongoDB deployment goes
