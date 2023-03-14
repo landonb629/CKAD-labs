@@ -66,7 +66,7 @@ Lab Progress
 20% - Services and Networking 
         - [x] Demonstrate basic understanding of NetworkPolicies 
         - [x] Provide and troubleshoot access to applications via services
-        - [] Use Ingress rules to expose applications
+        - [x] Use Ingress rules to expose applications
 
 15% - Application observability and maintenance 
         - [] Undersand API deprecations 
