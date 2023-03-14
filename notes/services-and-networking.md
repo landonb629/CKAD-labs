@@ -2,6 +2,37 @@
 
 # Use Ingress rules to expose applications 
 
+Ingress: exposes services inside the cluster to the outside world over HTTP/S
+Ingress Controller: 
+
+Ingress rules: tells ingress how to route requests 
+
+What makes an ingress rule?
+- host (optional)
+- list of paths 
+- backend service: if no rules, all requests are sent to a default backend
+
+Basic setup for ingress rule 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress 
+metadata:
+  name: demo 
+spec:
+  rules:
+  - host: dev.com
+    http:
+      paths:
+        - pathType: Prefix 
+          path: "/dev"
+          backend:
+            service: 
+              name: service1
+              port:
+                number: 80
+```
+
 3 Types of Kubernetes Ingress
 - NodePort: 
     - maps a container to a port on the host machine 
@@ -15,13 +46,11 @@
 
 Ingress resources cannot work without an ingress controller, ingress controllers act as a load balancer for your ingress resources.
 
-# best resource I have found yet to talk about ingress
- - https://medium.com/@Oskarr3/setting-up-ingress-on-minikube-6ae825e98f82#:~:text=In%20order%20for%20the%20Ingress,have%20an%20Ingress%20controller%20running.
+## Types of Ingress
 
+Simple fanout: routes traffic from 1 IP address to more than one service
+Name based virtual hosting: routes to multiple hostnames at 1 IP address 
 
-Ingress Resource: 
-    - configuration object for an ingress controller
-    - configures how objects are routed to
 
 
 # Demonstrate basic understanding of network policies 
