@@ -44,8 +44,9 @@ metadata:
   name: deploy
 spec:
   replicas: 2 
-  selector: 
-    app: frontend
+  selector:
+    matchLabels:
+      app: frontend
 ```
 
 Updating a deployment
