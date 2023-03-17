@@ -21,3 +21,6 @@ e. create a deployment using the nginx image, there should be a security context
 
 f. create a new namespace called limited-dev, create a resource quota where the cpu and memory limits cannot exceed 1 cpu and 1Gi memory, and the cpu and memory requests cannot exceed 1 CPU and 1 memory
     - create a pod with a resource request for 1050Mi memory and 1050 cpu, if this fails, you completed the lab correctly
+
+g. create a new private key, create a certificate signing request, add the new user to the kubeconfig, create a role that allows this user to get pods a namespace called development, switch contexts to this user and list the pods
+

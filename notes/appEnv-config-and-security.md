@@ -1,8 +1,5 @@
 # CKAD area - Application Environment, Configuration, and Security 
 
-## Discover and use resources that extend k8s 
-
-
 ## Understand authentication, authorization and admission control
 - authorization: what actions is the identity permitted to perform?
 - authentication: who is this identity? are they allowed to access this resource?
@@ -95,6 +92,50 @@ How to check api access
 you can impersonate users or service accounts 
 
 ``` kubectl auth can-i list pods --as system:serviceaccount:pod-reader ``` 
+
+## How to add a user to kubernetes cluster using certificates 
+- k8s has a certificates API object that allows you to send a certificate signing request and approve it with kubernetes 
+
+Request process
+- create a CertificateSigningRequest 
+- approve the request, this can be done manually or automatically by a controller 
+- the certificate for the user becomes available in the certificateSigningRequest object at the json path .status.certificate 
+- that certificate must then be decoded from base64 and stored in a username.crt file 
+- create a role and rolebinding for the new user 
+- add the user to kubeconfig 
+  - config set-credentials 
+  - config set-context
+  - config use-context
+
+## How to generate a certificate for a user? 
+
+- generate a cert
+``` openssl genrsa -out myuser.key 2048 ```
+- generate a signing request 
+``` openssl req -new -key myuser.key -out myuser.csr ```
+- encode the csr in base64 
+``` cat myuser.csr | base64 ``` 
+
+
+## What does a CertificateSigningRequest API object need? 
+- usage: this has to be 'client auth'
+- expirationSeconds: how long in seconds before the request will expire 
+- request: the base64 encoded certificate signing request 
+
+```
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: user-csr
+spec:
+  request: ##base64encodedvalue
+  expirationSeconds: 86400
+  usages:
+    - client auth
+```
+
+https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/
+https://thenewstack.io/a-practical-approach-to-understanding-kubernetes-authentication/
 
 
 ## Understand defining resource requirements, limits, and quotas
