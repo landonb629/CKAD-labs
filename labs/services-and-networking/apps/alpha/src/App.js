@@ -11,7 +11,7 @@ function App() {
   return (
     <main style={{display: 'flex', justifyContent: 'center', background: 'red'}}>
       <div>
-        <h2>Hello from alpha</h2>
+        <h2>Hello from alpha 1.1</h2>
       </div>
     </main>
   );
