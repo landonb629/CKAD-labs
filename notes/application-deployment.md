@@ -84,3 +84,24 @@ Deployment strategies
             - this option would need tuning if you have a very highly utilized application that cannot function with only a percentage of the pool available 
             - example: your app begins to crash when less than 5 / 10 pods are available, so you need to set the max unavailable percentage accordingly, something like 30% 
       - maxSurge: the number of pods that can be created over the desired number of pods
+
+Viewing the properties of your deployment changes 
+- viewing the reason why the deployment triggered (change cause)
+- viewing the rollout history 
+- viewing the rollout status
+
+How to rollback? 
+- use the  ``` rollout undo ``` command to undo your rollout to a specific revision
+- view the revision with the ``` kubectl rollout history deployment/$deployment-name ``` command 
+- to rollback: 
+   ``` kubectl rollout undo deployment/$deployment-name --to-revision 3 #or whatever number you want to rollback to ```
+
+How to view the reason for a deployment?
+- set with the annotation ``` kubernetes.io/change-cause ```
+- you can see the history of your rollout with the following command 
+``` kubectl rollout history deployment/$deployment-name ```
+
+How to see the status of your rollout?
+- use the ``` rollout status ``` command 
+``` kubectl rollout status deployment/$deployment-name ```
+
