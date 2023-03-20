@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-#NTRYPOINT ["npm", "start"]
+#ENTRYPOINT ["npm", "start"]

@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . /usr/src/app/
 
-EXPOSE 3031
+EXPOSE 3032
 
 ENTRYPOINT ["npm", "start"]

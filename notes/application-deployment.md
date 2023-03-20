@@ -105,3 +105,19 @@ How to see the status of your rollout?
 - use the ``` rollout status ``` command 
 ``` kubectl rollout status deployment/$deployment-name ```
 
+
+## Use the Helm package manager to deploy an existing package
+
+Understanding Helm
+- tool for managing k8s packages called charts 
+- charts: collection of files inside a directory, the files describe a related set of kubernetes resources 
+  - every chart must have a version number 
+- helm charts allow you to pass "variables" to the helm charts in order to configure the application differently based on the environment
+
+What would you use a chart for?
+ - deploying a simple, or complex kubernetes application 
+
+description of the different files that are part of a helm chart 
+- chart.yaml: contains metadata information related to the chart 
+
+

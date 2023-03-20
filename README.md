@@ -75,11 +75,10 @@ Lab Progress
         - [x] Utilize persistent and ephemeral volumes
 
 20% - Application Deployment 
-        - [] Use Kubernetes primitives to implement common deployment strategies 
 
-        - [] understand deployments and how to perform rolling updates
-
-        - [] use the helm package manager to deploy existing packages 
+         [x] Use Kubernetes primitives to implement common deployment strategies 
+         [x] understand deployments and how to perform rolling updates
+         [ ] use the helm package manager to deploy existing packages 
 
 20% - Services and Networking 
 

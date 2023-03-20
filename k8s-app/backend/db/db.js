@@ -8,7 +8,7 @@ const url = config.get('db.url')
 
 const dbConnection = () => { 
     try {  
-        return mongoose.connect("mongodb://db:27017", { //url,{
+        return mongoose.connect("mongodb://db.default.svc.cluster.local:27017", { //url,{
            // auth: { 
            //     username: username,
            //     password: password

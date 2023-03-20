@@ -15,3 +15,5 @@ d. view the rollout history for the deployment
 
 e. roll back the deployment to the revision #2 
 ``` k rollout undo deployment/alpha-deploy --to-revision=2 ```
+
+f. create a helm chart for the application 

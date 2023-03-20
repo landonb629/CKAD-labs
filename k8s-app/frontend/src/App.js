@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState('')
   const getData = async () => { 
     console.log('getting')
-    const data = await fetch('http://localhost:3032/api/v1/get')
+    const data = await fetch('/api/v1/get')
     const response = await data.json();
     const {msg} = response
     setData(msg)
