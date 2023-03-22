@@ -1,0 +1,29 @@
+# deployment 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      tier: backend
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 50%
+  template:
+    metadata:
+      labels:
+        tier: backend
+    spec:
+      containers:
+        - name: backend 
+          image: lbabay.azurecr.io/simple-backend:v1.2
+          livenessProbe:
+            httpGet:
+               path: /healthcheck
+               port: 3032
+            initialDelaySeconds: 10
+            periodSeconds: 5 
+

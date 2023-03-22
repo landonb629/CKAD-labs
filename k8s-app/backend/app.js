@@ -13,6 +13,9 @@ app.get("/api/v1/get", (req, res) => {
     console.log('backend responding')
     res.status(200).json({msg: 'rendered from api'})
 })
+app.get("/healthcheck", (req, res) => {
+    res.status(200).end()
+})
 
 
 const start = async () => { 
