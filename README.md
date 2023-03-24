@@ -92,10 +92,10 @@ Lab Progress
 
         - [] Undersand API deprecations 
 
-        - [] Implement probes and heath checks
+        - [x] Implement probes and heath checks
 
         - [] use provided tools to monitor Kubernetes applications 
 
-        - [] Utilized container logs 
+        - [x] Utilized container logs 
 
         - [] Debugging in Kubernetes
