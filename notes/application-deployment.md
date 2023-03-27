@@ -119,5 +119,11 @@ What would you use a chart for?
 
 description of the different files that are part of a helm chart 
 - chart.yaml: contains metadata information related to the chart 
+- .helmignore: define all the files which we don't want to include in the helm chart 
+- values.yaml: defines the values for the YAML templates, ex: replicas, image name
+- charts (directory): can add another chart inside, if our chart has dependencies, is empty by default
+- templates: all the manifests from the application
+- templates/NOTES: text that is output once the helm deployment is successful 
+- templates/tests: you can write tests for your helm deployments
 
 

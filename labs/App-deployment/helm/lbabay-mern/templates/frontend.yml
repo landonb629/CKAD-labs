@@ -1,0 +1,19 @@
+apiVersion: apps/v1 
+kind: Deployment 
+metadata:
+  name: {{ .Chart.Name }}-frontend
+  labels: 
+    tier: frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata: 
+      labels: 
+        tier: frontend
+    spec:
+      containers:
+        - name: simple-app-frontend
+          image: "{{ .Values.frontend.repository}}/{{ .Values.frontend.image }}:{{ .Values.frontend.tag }}"

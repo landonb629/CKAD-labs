@@ -16,4 +16,8 @@ d. view the rollout history for the deployment
 e. roll back the deployment to the revision #2 
 ``` k rollout undo deployment/alpha-deploy --to-revision=2 ```
 
-f. create a helm chart for the application 
+f. deploy the helm chart found in the helm folder called lbabay-mern, perform the following actions:
+    - change the replicaCount for the frontend from 1 to 2 
+    - upgrade the helm chart, verify that the deployment now has 2 containers in the pod 
+    - rollback the helm deployment
+    - uninstall the helm deployment

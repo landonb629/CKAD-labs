@@ -24,3 +24,5 @@ f. create a new namespace called limited-dev, create a resource quota where the 
 
 g. create a new private key, create a certificate signing request, add the new user to the kubeconfig, create a role that allows this user to get pods a namespace called development, switch contexts to this user and list the pods
 
+
+

@@ -1,0 +1,26 @@
+# resources needed: service, deployment
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: {{ .Chart.Name }}-backend
+  labels:
+    tier: api 
+spec:
+  replicas: 2 
+  selector: 
+    matchLabels: 
+      tier: api 
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 50% 
+  template:
+    metadata:
+      labels:
+        tier: api 
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.backend.repository }}/{{ .Values.backend.image }}:{{ .Values.backend.tag }}"
+          ports:
+            - containerPort: 3032
