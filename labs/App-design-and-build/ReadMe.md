@@ -4,10 +4,6 @@
   - exec into the html-host container and check if the file exists
   - if the file exists, you are done 
 
-// add a lab to mount a persistent volume into a pod 
-// add a lab to mount a config map into a pod as a volume
-// add a lab to mount a secret into a pod as a volume
-
 2. create a persistent volume called pv0001 of size 200Mi, mapped to the host location /data, create a persistent volume claim of 5Mi, make it RWX, map the PVC to /tmp/test in the pod
   - in order for this to work on minikube, you must first create a storage class called manual
 
@@ -32,3 +28,4 @@ c. create a pod that runs a postgresql container, create a job to backup the dat
 
 
 # Lab 4 - Define, build, and modify container images 
+
