@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: lab1g-v2
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      env: green 
+  template: 
+    metadata:
+      labels:
+        env: green
+    spec:
+      containers:
+        - name: bravo
+          image: lbabay.azurecr.io/bravo:v1.0 

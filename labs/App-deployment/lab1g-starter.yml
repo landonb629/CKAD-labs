@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: lab1g
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      env: blue 
+  template: 
+    metadata:
+      labels:
+        env: blue 
+    spec:
+      containers:
+        - name: httpd 
+          image: lbabay.azurecr.io/alpha:v1.0 
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: app
+spec:
+  type: NodePort
+  selector:
+    env: blue
+  ports:
+    - port: 3000
+      targetPort: 3000

@@ -24,8 +24,6 @@ a. create a cronJob that runs every minute. use the busybox image and print the 
 b. create a job that needs to complete successfully 8 times, and runs 2 in parallel, that uses the busybox image to print "Hello from k8s job"
   - the job should remove itself 15 seconds after completion
 
-c. create a pod that runs a postgresql container, create a job to backup the database every minute
-
 
 # Lab 4 - Define, build, and modify container images 
 

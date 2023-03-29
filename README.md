@@ -78,7 +78,7 @@ Lab Progress
 
          [x] Use Kubernetes primitives to implement common deployment strategies 
          [x] understand deployments and how to perform rolling updates
-         [ ] use the helm package manager to deploy existing packages 
+         [x] use the helm package manager to deploy existing packages 
 
 20% - Services and Networking 
 

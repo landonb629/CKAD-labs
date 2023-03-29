@@ -21,3 +21,5 @@ f. deploy the helm chart found in the helm folder called lbabay-mern, perform th
     - upgrade the helm chart, verify that the deployment now has 2 containers in the pod 
     - rollback the helm deployment
     - uninstall the helm deployment
+
+g. deploy the lab1g-starter. this will deploy a new app, we need to update the version from httpd:alpine to nginx:alpine, create another deployment called lab1g-v2, deploy the new deployment and make sure it is in a running state, once it's in a running state, change the service to point at the new deployment

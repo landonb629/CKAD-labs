@@ -127,3 +127,32 @@ description of the different files that are part of a helm chart
 - templates/tests: you can write tests for your helm deployments
 
 
+## How to perform a manual blue / green deployment 
+
+what is a blue / green deployment? 
+- splitting up your application environmnet into the old (blue) version and new (green) version
+- you can test your new application version without redirecting traffic to it yet
+- once you are ready, you cut the traffic over to the green version, your blue version stays online and becomes ready for rollback if needed 
+
+steps:
+1. deploy your new application version 
+2. change the selector on your service to point to the new application
+3. scale the old application deployment to 0 
+
+
+
+## How to perform a canary deployment 
+
+What is a canary deployment? 
+- introduces a small subset of traffic to the new application, while still serving the majority of users with the old application
+- once the new application is deemed ready, the traffic can be scaled up to the new application
+
+example: 
+
+first day of release: 20% of traffic goes to the new application version and 80% still goes to the old version
+
+How?
+1. lets say that we have 10 replicas, create the new deployment with 2 replicas 
+2. create the new deployment with the same label so your service that exposes the application will direct traffic to the new deployment
+3. scale your old application to 8 replicas 
+4. this will serve 80% of traffic to your old app and 20% of traffic to your new app
