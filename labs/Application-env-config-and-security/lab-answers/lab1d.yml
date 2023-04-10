@@ -1,37 +1,32 @@
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: certificates.k8s.io/v1 
+kind: CertificateSigningRequest
 metadata:
-  name: pod-reader
-  namespace: default
+  name: newkey
+spec:
+  request: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQ1ZqQ0NBVDRDQVFBd0VURVBNQTBHQTFVRUF3d0dibVYzYTJWNU1JSUJJakFOQmdrcWhraUc5dzBCQVFFRgpBQU9DQVE4QU1JSUJDZ0tDQVFFQXJXNm5rbUVKOTVVOWZwZmdlM2k2VC9tMzNPczd2NTVaQmI1WGJwR3VlREJRCm1NcHVFdmdRa2FnYUwyOFJTdEV4SXN2OFM3Vk5EM0loUnA5VThHZVZUc0g4Ly9mTSswRzI4emdoT1JXYUxUZWUKUFlLMklzT0wvK2RHajMzcnJiOUJVcDl0c2szVWlGNXo4ZkpSYzZSVVdRdDFGRnBvejFTb1p3cVpJSENpQzAwMwpRS3BpcytHNEdtMGltaUUzTEV4TUdjRU5VaWIwU0d5NDlrc3hBZzhGdndRSU1EdFhXendmc3ZiY21OZ2VoQlJ0CmJpSzM4ckxqT1RlQWEzWUFNZ25WTG9TR3EwT2VLOUJvSFN4d1hpbTJ0cDgwWWtqTFFWOVpYZkNucjdnRXFBajQKZDJreEM1K2JndWhtNjQycjkyRWo4MjM0ekwvTXpFcy9yay9hRVZWbTB3SURBUUFCb0FBd0RRWUpLb1pJaHZjTgpBUUVMQlFBRGdnRUJBSmE4MGhMQVM4ZVJKRTV3SSt0bldkNkZTTExmUVNPa1YvelVoNldQejNkeDJvcFNIRjRWCllCQVZsZ0VUTnNoZzU4aTRJbmVpN1FveUNQTGVJdDVNeTBKOHVLU1VoQ2V3ZUxLZ0dYZ1crdTBUa2FkeWdEMmgKZytyeHhBU0wxcVZUbTdxZGY3VWhrTEVSRGZKNEhUN1pMYVlpc1RTdTUyVGtKd3BYT2JiOFR4NzR5UW5qSERobgpJNW11WVNucXRoWlk5ZDVMdXd0bWtpQUlvR0dpVGlYNkRKeEVQQ1cxckswRHhSTFFMM3F1YWVhQjNMSXhHRElHClVndEU5elJRVFhOVHJ3Q0Q3QXpsWmF4MGU3V1YyOU5leFdFSFB6dnREbm5wdklWVGlyL3FoTHJSOGJDdXZtMXYKMTNLMWpZSHZield3MS9ySVI0aFE5Z1dwTGp2QXhFenVWYmM9Ci0tLS0tRU5EIENFUlRJRklDQVRFIFJFUVVFU1QtLS0tLQo=
+  usages:
+    - client auth 
+  signerName: kubernetes.io/kube-apiserver-client
+  username: newkey
+---
+apiVersion: rbac.authorization.k8s.io/v1 
+kind: Role 
+metadata:
+  name: newkey-role
+rules: 
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: RoleBinding
 metadata:
-  name: pod-reader-role
-  namespace: default
-rules:
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "watch", "list"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: pod-reader-to-role
-  namespace: default
+  name: newkey-rolebinding
 subjects:
-  - namespace: default
-    kind: ServiceAccount
-    name: pod-reader
-roleRef:
+  - kind: User
+    name: newkey
+    apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: Role 
+  name: newkey-role
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: pod-reader-role
----
-apiVersion: v1 
-kind: Secret 
-metadata:
-  name: pod-reader-secret
-  annotations:
-    kubernetes.io/service-account.name: pod-reader
-type: kubernetes.io/service-account-token
