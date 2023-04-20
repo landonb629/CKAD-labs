@@ -1,8 +1,5 @@
 # Lab 1 - utilize persistent and ephemeral volumes 
-1. you will need to create a multi container pod. a volume called html-volume. create a pod called volume-demo. create a container in the pod using the nginx image called html-host and map the html-volume to var/www/html. create another container in the pod using the ubuntu image called html-source map the log volume to /tmp/.
-  - exec into the html-source container and create a test html file (touch index.html)
-  - exec into the html-host container and check if the file exists
-  - if the file exists, you are done 
+1. you will need to create a multi container pod. create a volume called html-volume. create a pod called volume-demo. create a container in the pod using the nginx image called html-host and map the html-volume to /usr/share/nginx/html. create another container in the pod using the ubuntu image called html-source map the log volume to /tmp/. use the following command to "echo 'hello from the source' > /tmp/index.html"
 
 2. create a persistent volume called pv0001 of size 200Mi, mapped to the host location /data, create a persistent volume claim of 5Mi, make it RWX, map the PVC to /tmp/test in the pod
   - in order for this to work on minikube, you must first create a storage class called manual

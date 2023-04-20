@@ -1,28 +1,27 @@
-a. create a configMap, then create a script to echo the config map to a location on an ephemeral volume 
+a. create a configmap with a key of index.html, and a value of "hello from config map". mount the config map in a deployment with 3 replicas using the nginx image, mount the config map to the path /usr/share/nginx/html, create a nodeport service for the deployment and view the html page in your browser
 
-b. create a config map with one value, set that value equal to an environment variable in a pod, exec into the pod and view the data
+NOTE: to view the service on minikube you can use "minikube service --url $name"
 
-c. create a configMap with the following as data, using an nginx container, map the config map to /usr/share/nginx/html, expose the pod with a service and view the custom html 
+b. create a secret called secret1 with these values, "user=test" "pass=word". create another secret called secret2 with the value "second=secret". create a deployment with two environment variables called SECRET_USER and SECRET_PASS, these variables should map to the values from secret1. mount secret2 to the /tmp/secret/ as a volume in the deployment
 
-```
-index.html: | 
-    <h1>Hello from configMap</h1>
-```
+c. create a namespace called limited, create a resource quota in that namespace that limits to 500M CPU, 500Mi memory, and 8 pods. create a deployment with 5 replicas that requests half of the namespaces CPU and memory limits, and has a limit of 500Mi and 500M cpu. add a security context to the containers that sets privileged to false and allowPrivilegeEscalation to false.
 
 
-d. create a service account called pod-reader, assign permissions to this pod that allows it to read pods in the cluster. mount this service account to a pod using the nginx image. verify that your service account has access to get pods with the can-i command
+d. create a new private key, create a certificate signing request, add the new user to the kubeconfig, create a role that allows this user to get pods a namespace called development, switch contexts to this user and list the pods
 
-e. create a deployment using the nginx image, there should be a security context configuration added with the runAsUser = 2000, add 3 replicas.
-    - go into one of the pods with
-        ``` kubectl exec $podname -i -t -- /bin/bash ```
-    - run the following command 
-        ``` ps -aux ```
-    if you see the processes running as user 2000. you did the lab correctly
+    NOTE: make sure that your CN matches the name of your new user
 
-f. create a new namespace called limited-dev, create a resource quota where the cpu and memory limits cannot exceed 1 cpu and 1Gi memory, and the cpu and memory requests cannot exceed 1 CPU and 1 memory
-    - create a pod with a resource request for 1050Mi memory and 1050 cpu, if this fails, you completed the lab correctly
+    steps to create a private key, and certificate signing request
+    
+    ```
+    openssl genrsa -out newkey.key 2048 
+    ```
 
-g. create a new private key, create a certificate signing request, add the new user to the kubeconfig, create a role that allows this user to get pods a namespace called development, switch contexts to this user and list the pods
+    ``` 
+    openssl req -new -key newkey.key -out newkey.csr -subj "/CN=nameofuser"
+    ```
+
+
 
 
 

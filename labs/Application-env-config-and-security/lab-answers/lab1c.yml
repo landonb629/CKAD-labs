@@ -1,0 +1,39 @@
+apiVersion: v1 
+kind: ResourceQuota
+metadata:
+  name: lab1c
+  namespace: limited 
+spec: 
+  hard:
+    cpu: 3
+    memory: 500Mi
+    pods: 8
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab1c
+  namespace: limited
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: lab1c
+  template:
+    metadata:
+      labels:
+        app: lab1c
+    spec:
+      containers:
+      - name: lab1c-containers
+        image: busybox
+        resources:
+          requests:
+            cpu: 1
+            memory: 25Mi
+          limits:
+            cpu: 2
+            memory: 50Mi
+        securityContext:
+          privileged: false 
+          allowPrivilegeEscalation: false

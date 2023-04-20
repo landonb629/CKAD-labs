@@ -1,0 +1,50 @@
+apiVersion: v1 
+kind: Secret 
+metadata:
+  name: secret1
+data:
+  user: dGVzdA==
+  pass: d29yZA==
+---
+apiVersion: v1 
+kind: Secret 
+metadata:
+  name: secret2 
+data:
+  second: c2VjcmV0
+---
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: lab1b 
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: lab1b
+  template:
+    metadata:
+      labels:
+        app: lab1b 
+    spec:
+      containers:
+        - name: lab1b-container
+          image: nginx 
+          volumeMounts:
+            - name: secret-value
+              mountPath: /tmp/secret
+          env:
+            - name: SECRET_USER
+              valueFrom:  
+                secretKeyRef:
+                  name: secret1 
+                  key: user 
+            - name: SECRET_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret1
+                  key: pass
+      volumes:
+        - name: secret-value 
+          secret:
+            secretName: secret2 
