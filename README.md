@@ -14,20 +14,20 @@ the labs built in this repository will be using the demo application that is bui
         - understand ServiceAccounts  
         - understand SecurityContexts (lab1c)
 
-20% - Application Design and Build 
+20% - Application Design and Build (done)
 
         - Define, build and modify container images 
         - Understand jobs and CronJobs 
         - Understand multi-container Pod design patters 
         - Utilize persistent and ephemeral volumes
 
-20% - Application Deployment 
+20% - Application Deployment (done)
 
         - Use Kubernetes primitives to implement common deployment strategies 
         - understand deployments and how to perform rolling updates
         - use the help package manager to deploy existing packages 
 
-20% - Services and Networking 
+20% - Services and Networking (done)
 
         - Demonstrate basic understanding of NetworkPolicies 
         - Provide and troubleshoot access to applications via services

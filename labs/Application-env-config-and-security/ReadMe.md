@@ -18,7 +18,7 @@ d. create a new private key, create a certificate signing request, add the new u
     ```
 
     ``` 
-    openssl req -new -key newkey.key -out newkey.csr -subj "CN=nameofuser"
+    openssl req -new -key newkey.key -out newkey.csr -subj "/CN=nameofuser"
     ```
 
 
